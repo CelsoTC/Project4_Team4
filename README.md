@@ -9,6 +9,7 @@ The package `gym-2048` does not work with newer versions of Python. For now I ha
 
 - `main.py` has an example from gym-2048 on how to run the environment
 - `dqn_model.py` has a simple neural network to obtain the action. Since the state is a 4x4 matrix there is a flatten in the beginning and then the network will find the best action
+- `replay_memory.py` has a replay memory buffer implementation with functions to add experience to the buffer and sample experiences with some batch size from the buffer
 
 ## Important links
 
