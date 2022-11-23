@@ -11,9 +11,9 @@ class DQN(nn.Module):
         super(DQN, self).__init__()
         self.network = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(size_state*size_state, 8),
+            nn.Linear(size_state*size_state, 12),
             nn.LeakyReLU(),
-            nn.Linear(8, num_actions)
+            nn.Linear(12, num_actions)
         )
 
     def forward(self, x):
