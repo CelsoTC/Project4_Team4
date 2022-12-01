@@ -28,3 +28,5 @@ https://github.com/SergioIommi/DQN-2048
 https://github.com/navjindervirdee/2048-deep-reinforcement-learning
 
 https://tjwei.github.io/2048-NN/ - This link also has a repository, however, it's a complex model
+
+https://github.com/FelipeMarcelino/2048-Gym - Rendering the episodes
