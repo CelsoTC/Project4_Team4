@@ -15,6 +15,8 @@ The package `gym-2048` does not work with newer versions of Python. For now I ha
 - `plots.ipynb` Jupyter notebook for plotting the reward
 - `test.py` - used just to add some quick funtion for tests
 - `reward.npy` - File with the rewards saved during training
+- `play_game.ipynb` - File with user input episode and runs the episode similar to main.py but from jupyter notebook
+- `game.npy` - One user played game state transition saved
 
 
 ## Important links

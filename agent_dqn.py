@@ -76,8 +76,10 @@ while not done or step < 20:
         print('Episode ', step)
 
 avg = []
+max_values_epoch = []
 len_epis = 0
 frame = 0
+best_reward = 0
 for step in range(min_replay):
     epsilon = np.interp(step, [0, 20000], [epsilon_initial, epsilon_final])
     num_episodes = 0
@@ -110,7 +112,9 @@ for step in range(min_replay):
             num_episodes += 1
             
             len_append.append(len_epis)
+            max_values_epoch.append(max_value)
             len_epis = 0
+
         len_avg = np.mean(len_append)            
 
     # Starting gradient step
@@ -153,6 +157,12 @@ for step in range(min_replay):
         target_net.load_state_dict(online_net.state_dict())
 
     avg.append(np.mean(reward_buffer))
+    
+    if np.mean(reward_buffer) > best_reward:
+        best_reward = np.mean(reward_buffer)
+        torch.save(online_net.state_dict(),'./best_model.pth')
+        print('Best reward: ', best_reward)
+
     # Logging
     if step % 10 ==0:
         print()
@@ -169,7 +179,8 @@ for step in range(min_replay):
     if step % 1000 == 0:
         torch.save(target_net.state_dict(),'./trained_model.pth')
         torch.save(online_net.state_dict(),'./trained_model_1.pth')
-
+        with open('max_value.npy', 'wb') as f:
+            np.save(f, max_values_epoch)
         with open('reward.npy', 'wb') as f:
             np.save(f, avg)
 
