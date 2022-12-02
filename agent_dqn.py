@@ -11,9 +11,9 @@ import gym_2048
 import gym
 
 # Test
-torch.manual_seed(595)
-np.random.seed(595)
-random.seed(595)
+#torch.manual_seed()
+#np.random.seed()
+#random.seed()
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -21,10 +21,10 @@ CPU = torch.device('cpu')
 print(device)
 
 batch_size = 32
-learning_rate = 1.5e-4
+learning_rate = 5e-5
 no_op_max = 30
 gamma = 0.99
-min_replay = 10001 
+min_replay = 500001 
 epsilon_initial = 1
 epsilon_final = 0.025
 buffer_size = 50000
@@ -55,8 +55,9 @@ target_net.to(device)
 obs = env.reset()
 episode_reward = 0
 moves = 0
+step = 0
 done = False
-while not done:
+while not done or step < 20:
     action = env.np_random.choice(range(4), 1).item()
     new_state, reward, done, info = env.step(action)
     moves += 1
@@ -64,21 +65,27 @@ while not done:
     replayer_buffer.append(transition)
     obs = new_state
 
+
     print('Next Action: "{}"\n\nReward: {}'.format(
       gym_2048.Base2048Env.ACTION_STRING[action], reward))
     env.render()
+
+    if done:
+        obs = env.reset()
+        step += 1
+        print('Episode ', step)
 
 avg = []
 len_epis = 0
 frame = 0
 for step in range(min_replay):
-    epsilon = np.interp(step, [0, min_replay], [epsilon_initial, epsilon_final])
+    epsilon = np.interp(step, [0, 20000], [epsilon_initial, epsilon_final])
     num_episodes = 0
     #self.reward_buffer.clear()
     #self.replayer_buffer = []
     len_append = []
     
-    while num_episodes < 2:
+    while num_episodes < 1:
         
         rnd_sample = random.random()
         if rnd_sample <= epsilon:
@@ -94,7 +101,7 @@ for step in range(min_replay):
         episode_reward += reward
         len_epis += 1
         frame += 1
-
+        max_value = obs.max()
         if done:
             obs = env.reset()
 
@@ -134,7 +141,7 @@ for step in range(min_replay):
 
         action_q_values = torch.gather(input=q_values, dim=1, index=actions_t)
 
-        loss = F.smooth_l1_loss(action_q_values, targets)
+        loss = F.mse_loss(action_q_values, targets)
 
         # Gradient Descent
         optim.zero_grad()
@@ -157,6 +164,7 @@ for step in range(min_replay):
         print('Reward buffer ', len(reward_buffer))
         print('Episodes buffer ',len(replayer_buffer))
         print("Frame ", f"{frame:,}")
+        print('Max value ', max_value)
 
     if step % 1000 == 0:
         torch.save(target_net.state_dict(),'./trained_model.pth')

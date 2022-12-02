@@ -6,10 +6,10 @@ from new_action import make_action
 
 if __name__ == '__main__':
   env = gym.make('2048-v0')
-  env.seed(42)
+  env.seed()
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   online_net = DQN(size_state=4, num_actions=4)
-  online_net.load_state_dict(torch.load('./trained_model_1.pth'))
+  online_net.load_state_dict(torch.load('./trained_model.pth'))
   online_net.eval()
   obs = env.reset()
   env.render()
