@@ -166,7 +166,7 @@ for step in range(min_replay):
     
     if np.mean(reward_buffer) > best_reward:
         best_reward = np.mean(reward_buffer)
-        torch.save(online_net.state_dict(),'./best_model.pth')
+        torch.save(online_net.state_dict(),'./Double_dqn/best_model.pth')
         print('Best reward: ', best_reward)
 
     # Logging
@@ -183,12 +183,12 @@ for step in range(min_replay):
         print('Max value ', max_value)
 
     if step % 1000 == 0:
-        torch.save(target_net.state_dict(),'./trained_model.pth')
-        torch.save(online_net.state_dict(),'./trained_model_1.pth')
-        with open('max_value.npy', 'wb') as f:
+        torch.save(target_net.state_dict(),'./Double_dqn/trained_model.pth')
+        torch.save(online_net.state_dict(),'./Double_dqn/trained_model_1.pth')
+        with open('./Double_dqn/max_value.npy', 'wb') as f:
             np.save(f, max_values_epoch)
-        with open('reward.npy', 'wb') as f:
+        with open('./Double_dqn/reward.npy', 'wb') as f:
             np.save(f, avg)
 
-torch.save(target_net.state_dict(),'./trained_model.pth')
-torch.save(online_net.state_dict(),'./trained_model_1.pth')
+torch.save(target_net.state_dict(),'./Double_dqn/trained_model.pth')
+torch.save(online_net.state_dict(),'./Double_dqn/trained_model_1.pth')
