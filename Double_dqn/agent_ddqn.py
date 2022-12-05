@@ -136,7 +136,7 @@ for step in range(min_replay):
         # Compute targets
 
         with torch.no_grad():
-            target_online_q_values = online_net(obses_t.to(device))
+            target_online_q_values = online_net(new_states_t.to(device))
             best_q_indices = target_online_q_values.argmax(dim=1, keepdim=True)
         
             target_q_values = target_net(new_states_t.to(device))
