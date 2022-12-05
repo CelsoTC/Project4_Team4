@@ -81,7 +81,7 @@ len_epis = 0
 frame = 0
 best_reward = 0
 for step in range(min_replay):
-    epsilon = np.interp(step, [0, 20000], [epsilon_initial, epsilon_final])
+    epsilon = np.interp(step, [0, 30000], [epsilon_initial, epsilon_final])
     num_episodes = 0
     #self.reward_buffer.clear()
     #self.replayer_buffer = []
