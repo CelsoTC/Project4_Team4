@@ -5,7 +5,7 @@ import sys
 from tkinter import *
 
 
-played_game = pickle.load(open("./best_episode.pkl", "rb"))
+played_game = pickle.load(open("./Render_game/ddqn_episode.pkl", "rb"))
 
 SIZE = 1200
 GRID_LEN = 4
